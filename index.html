@@ -1011,9 +1011,21 @@
       );
 
       const data = await response.json();
+      console.log('Gemini response:', JSON.stringify(data));
+      
+      if (data.error) throw new Error(data.error.message);
+      
       const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-      const clean = text.replace(/```json|```/g, '').trim();
-      const extracted = JSON.parse(clean);
+      console.log('Extracted text:', text);
+      
+      if (!text) throw new Error('لم يتم الحصول على نص من Gemini');
+      
+      // استخراج JSON من النص
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error('لم يتم العثور على JSON في الرد');
+      
+      const extracted = JSON.parse(jsonMatch[0]);
+      console.log('Parsed:', extracted);
 
       // ملء الحقول
       if (extracted.type) {
