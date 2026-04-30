@@ -1030,12 +1030,10 @@
       // ملء الحقول
       if (extracted.type) {
         const isWared = extracted.type.includes('وارد');
-        document.getElementById('typeWared').classList.toggle('active', isWared);
-        document.getElementById('typeSader').classList.toggle('active', !isWared);
-        document.getElementById('typeWared').style.background = isWared ? 'var(--wared)' : '';
-        document.getElementById('typeWared').style.color = isWared ? 'white' : '';
-        document.getElementById('typeSader').style.background = !isWared ? 'var(--sader)' : '';
-        document.getElementById('typeSader').style.color = !isWared ? 'white' : '';
+        const btns = document.querySelectorAll('.type-btn');
+        btns.forEach(b => b.classList.remove('active'));
+        const targetBtn = document.querySelector(isWared ? '.wared-btn' : '.sader-btn');
+        if (targetBtn) targetBtn.classList.add('active');
         currentType = isWared ? 'wared' : 'sader';
       }
       if (extracted.num)     document.getElementById('fNum').value = extracted.num;
